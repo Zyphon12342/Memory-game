@@ -51,10 +51,10 @@
     align-items: center;
     justify-content: center;
     font-size: 2em;
+    border: solid black;
 }
 
 .card-front {
-    border: solid black;
     background-color:   white;
     color: transparent; 
 }
