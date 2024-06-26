@@ -19,9 +19,6 @@
     height: 450px;
     width: 450px;
 }
-.highlight {
-    background-color: yellow;
-}
 
 .card {
     width: calc(100% / 4); 
@@ -38,7 +35,7 @@
     transform-style: preserve-3d;
 }
 
-.card.flipped .card-inner {
+.flipped .card-inner {
     transform: rotateY(180deg);
 }
 
@@ -55,12 +52,12 @@
 }
 
 .card-front {
-    background-color:   white;
-    color: transparent; 
+    background-color: white;
+    color: transparent;
 }
 
 .card-back {
     background-color: white;
-    color: black; 
-    transform: rotateY(180deg);
+    color: black;
+    transform: rotateY(180deg); /* Initially show the back of the card */
 }

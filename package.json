@@ -16,9 +16,9 @@
     "url": "https://github.com/Zyphon12342/Memory-game/issues"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "socket.io": "^4.7.5"
   },
   "homepage": "https://github.com/Zyphon12342/Memory-game#readme",
   "description": ""
-  
 }
