@@ -4,26 +4,49 @@
     padding: 0;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #74ebd5, #acb6e5);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
 #container {
-    display: flex; 
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 #Grid {
-    display: flex; 
-    background-color: gray;
-    flex-flow: row wrap;
-    margin: 5px auto;
-    height: 450px;
-    width: 450px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px auto;
+    width: 90vw;
+    height: 90vw;
+    max-width: 450px;
+    max-height: 450px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .card {
-    width: calc(100% / 4); 
-    height: calc(100% / 4); 
+    width: calc(100% / 4 - 10px);
+    height: calc(100% / 4 - 10px);
+    margin: 5px;
     perspective: 1000px;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
 }
 
 .card-inner {
@@ -33,9 +56,10 @@
     text-align: center;
     transition: transform 0.6s;
     transform-style: preserve-3d;
+    border-radius: 5px;
 }
 
-.flipped .card-inner {
+.card.flipped .card-inner {
     transform: rotateY(180deg);
 }
 
@@ -48,16 +72,61 @@
     align-items: center;
     justify-content: center;
     font-size: 2em;
-    border: solid black;
+    border-radius: 5px;
+    border: 1px solid #ccc;
 }
 
 .card-front {
-    background-color: white;
-    color: transparent;
+    background-color: #ffebcd;
 }
 
 .card-back {
-    background-color: white;
-    color: black;
-    transform: rotateY(180deg); /* Initially show the back of the card */
+    background-color: #e0e0e0;
+    transform: rotateY(180deg);
+}
+
+.card-back img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#HUD {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#score {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+#restartButton {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #74ebd5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#restartButton:hover {
+    background-color: #60d4c8;
+}
+
+@media (max-width: 600px) {
+    .card {
+        width: calc(100% / 4 - 5px);
+        height: calc(100% / 4 - 5px);
+        margin: 2.5px;
+    }
+
+    #score {
+        font-size: 1.2em;
+    }
+
+    #restartButton {
+        font-size: 0.9em;
+    }
 }

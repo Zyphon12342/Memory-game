@@ -1,30 +1,40 @@
 const socket = io();
 
 const Grid = document.getElementById("Grid");
+const scoreElement = document.getElementById("score");
+const restartButton = document.getElementById("restartButton");
 let lastClickTime = 0;
 
-// Receive update from server
+restartButton.addEventListener("click", () => {
+    socket.emit('restartGame');
+});
+
 socket.on('gameState', (gameState) => {
     console.log('Received gameState:', gameState);
     updateGrid(gameState);
+    updateScore(gameState.score);
 });
 
 socket.on('flipCard', (cardId) => {
     console.log('Flipping card:', cardId);
-    const cardElement = document.querySelector(`[data-id="${cardId}"]`);
-    if (cardElement) {
-        cardElement.classList.add('flipped');
-    }
+    setTimeout(() => {
+        const cardElement = document.querySelector(`[data-id="${cardId}"]`);
+        if (cardElement) {
+            cardElement.classList.add('flipped');
+        }
+    }, 100);
 });
 
 socket.on('unflipCards', (cards) => {
     console.log('Unflipping cards:', cards);
-    cards.forEach(cardId => {
-        const cardElement = document.querySelector(`[data-id="${cardId}"]`);
-        if (cardElement) {
-            cardElement.classList.remove('flipped');
-        }
-    });
+    setTimeout(() => {
+        cards.forEach(cardId => {
+            const cardElement = document.querySelector(`[data-id="${cardId}"]`);
+            if (cardElement) {
+                cardElement.classList.remove('flipped');
+            }
+        });
+    }, 100); // Adjust the timeout as needed for the cards to visibly flip back
 });
 
 socket.on('gameEnd', (gameState) => {
@@ -47,7 +57,12 @@ function updateGrid(gameState) {
         cardFront.classList.add("card-front");
         const cardBack = document.createElement("div");
         cardBack.classList.add("card-back");
-        cardBack.textContent = card.value;
+        
+        const img = document.createElement("img");
+        img.src = `img/${card.value}.jpg`; // Adjust image path based on your project structure
+        img.alt = `Image ${card.value}`;
+        cardBack.appendChild(img);
+
         cardInner.appendChild(cardFront);
         cardInner.appendChild(cardBack);
         Card.appendChild(cardInner);
@@ -55,16 +70,25 @@ function updateGrid(gameState) {
     });
 }
 
-Grid.addEventListener("click", (event) => {
-    const now = Date.now();
-    if (now - lastClickTime <= 300) return;
-    lastClickTime = now;
+function updateScore(score) {
+    scoreElement.textContent = `Score: ${score}`;
+}
 
+Grid.addEventListener("click", (event) => {
     const target = event.target.closest(".card");
     if (!target || target.classList.contains("flipped")) return;
     const cardId = parseInt(target.getAttribute("data-id"));
     console.log('Card clicked:', cardId);
-    socket.emit('flipCard', cardId);
+    handleCardClick(cardId);
+});
+
+// Handle touch events for mobile devices
+Grid.addEventListener("touchstart", (event) => {
+    const target = event.target.closest(".card");
+    if (!target || target.classList.contains("flipped")) return;
+    const cardId = parseInt(target.getAttribute("data-id"));
+    console.log('Card touched:', cardId);
+    handleCardClick(cardId);
 });
 
 Grid.addEventListener("mouseover", handleHover);
@@ -79,4 +103,11 @@ function handleHover(event) {
             target.style.backgroundColor = "";
         }
     }
+}
+
+function handleCardClick(cardId) {
+    const now = Date.now();
+    if (now - lastClickTime <= 300) return;
+    lastClickTime = now;
+    socket.emit('flipCard', cardId);
 }
